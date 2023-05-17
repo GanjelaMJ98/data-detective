@@ -1,9 +1,11 @@
 name: Publish data-detective-airflow
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - "data-detective-airflow/*.*.*"
+    paths:
+      - "data-detective-airflow/**"
+      - ".github/workflows/data-detective-airflow-test.yml"
 
 jobs:
   publish:
@@ -11,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ 3.9 ]
-        poetry-version: [ 1.1.13 ]
+        poetry-version: [ 1.2.2 ]
         os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -45,4 +47,3 @@ jobs:
           poetry config pypi-token.pypi ${PYPI_TOKEN}
           poetry install --no-dev
           poetry build
-          poetry publish
